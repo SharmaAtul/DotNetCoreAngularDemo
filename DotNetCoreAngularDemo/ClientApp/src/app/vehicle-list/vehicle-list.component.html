@@ -1,0 +1,45 @@
+<!---->
+<div>
+  <h1>Vehicle List</h1>
+  <p>
+    <a [routerLink]="['/vehicles/new']" class="btn btn-primary">Create New</a>
+  </p>
+  <div class="well">
+    <div class="form-group">
+      <label for="makes">Make</label>
+      <select id="makes" class="form-control" (change)="onFilterChange()" name="makes" [(ngModel)]="vquery.makeId">
+        <option value=""></option>
+        <option *ngFor="let m of makes" value="{{m.id}}">{{m.name}}</option>
+      </select>
+    </div>
+    <input type="button" value="Reset" class="btn btn-default" (click)="onResetFilter()" />
+  </div>
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns">
+            <div *ngIf="col.isSortable" (click)="sortBy(col.key)" class="fa">
+              {{col.title}}
+              <i *ngIf="vquery.sortColumn==col.key"
+                 [class.fa-sort-asc]="vquery.isSortAscending"
+                 [class.fa-sort-desc]="!vquery.isSortAscending"></i>
+            </div>
+            <div *ngIf="!col.isSortable">
+              {{col.title}}
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehicle of queryResult.items | paginate: { itemsPerPage: vquery.pageSize, currentPage: vquery.pageIndex, totalItems: queryResult.totalItems };">
+          <td>{{vehicle.make.name}}</td>
+          <td>{{vehicle.model.name}}</td>
+          <td>{{vehicle.contact.name}}</td>
+          <td><a [routerLink]="['/vehicles/'+ vehicle.id]">view</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination-controls *ngIf="queryResult.totalItems > vquery.pageSize" (pageChange)="onPageChanged($event)"></pagination-controls>
+</div>

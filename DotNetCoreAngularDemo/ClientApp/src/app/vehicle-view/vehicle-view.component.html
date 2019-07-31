@@ -1,0 +1,49 @@
+<h1>Vehicle</h1>
+<div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" [class.active]="currentTab=='basic'"><a href="javascript:void(0)" (click)="currentTab='basic'" aria-controls="basic" role="tab" data-toggle="tab">Vehicle</a></li>
+    <li role="presentation" [class.active]="currentTab=='photos'"><a href="javascript:void(0)" (click)="currentTab='photos'" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content" *ngIf="vehicle">
+    <!-- Vehicle tab -->
+    <div role="tabpanel" class="tab-pane" id="basic"
+         [class.active]="currentTab=='basic'">
+      <h2>Basics</h2>
+      <ul>
+        <li>Make: {{ vehicle.make.name }}</li>
+        <li>Model: {{ vehicle.model.name }}</li>
+        <li>Registered: {{ vehicle.isRegistered ? 'Yes' : 'No' }}
+      </ul>
+      <div *ngIf="vehicle.features.length > 0">
+        <h1>Feature</h1>
+        <ul>
+          <li *ngFor="let f of vehicle.features">{{f.name}}</li>
+        </ul>
+      </div>
+      <h2>Contact</h2>
+      <ul>
+        <li>Contact Name: {{ vehicle.contact.name }}</li>
+        <li *ngIf="vehicle.contact.email">Email: {{vehicle.contact.email}}</li>
+        <li>Contact Email: {{ vehicle.contact.email }}</li>
+      </ul>
+      <br/>
+      <p>
+        <a class="btn btn-primary" [routerLink]="['/vehicles/edit/', vehicle.id]">Edit</a>
+        <button class="btn btn-danger" (click)="delete()">Delete</button>
+        <a class="btn btn-default" [routerLink]="['/vehicles']">View All Vehicles</a>
+      </p>
+    </div>
+    <!-- Photos tab -->
+    <div role="tabpanel" class="tab-pane" id="photos" [class.active]="currentTab=='photos'">
+      <h2>Photos</h2>
+      <input type="file" id="file" #inputFile (change)="uploadFile()" />
+    </div>
+  </div>
+</div>
+
+
+
